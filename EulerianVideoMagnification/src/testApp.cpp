@@ -8,7 +8,7 @@ void testApp::setup(){
 	ofSetVerticalSync(true);
 	ofSetWindowShape(900, 480);
 	
-	ps3eye.initGrabber(640, 480);
+	ps3eye.initGrabber(320, 240);
 	
 	gui.setup("PS3Eye");
 	gui.setPosition(660,20);
@@ -66,6 +66,21 @@ void testApp::setup(){
 	onWhiteBalanceChange(gui.getIntSlider("White Balance"));
 	
 	cvImage.allocate(256, 256, OF_IMAGE_COLOR);
+	cvImageHalf.allocate(128, 128, OF_IMAGE_COLOR);
+	video.loadMovie("face.mp4");	
+	
+	for (int i = 0; i < video.getTotalNumFrames(); i++) {
+		video.setFrame(i);
+		ofxCv::resize(video, cvImage);
+		cvImage.update();
+		
+		
+		
+		vector<ofImage> copy;
+		copy.push_back(cvImage);
+		
+	}
+	
 	
 }
 
@@ -73,17 +88,39 @@ void testApp::setup(){
 void testApp::update(){
 	ps3eye.update();
 	
-	ofxCv::resize(ps3eye, cvImage);
+	if(ps3eye.isFrameNew()){
+		ofxCv::resize(ps3eye, cvImage);
+	
+		cv::Mat src = toCv(cvImage);
+		cv::Mat dst = toCv(cvImageHalf);
+		
+		for (int i = 0; i< 100; i++) {
+			cv::pyrDown( src, dst );
+		}
+		
+		cvImage.update();
+		cvImageHalf.update();
+	}
+	
+	
+	
+	
+	
+		
+	
+	
+	
 	
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	ps3eye.draw(0, 0);
-	cvImage.draw(0, ps3eye.getHeight());
-	
+	cvImage.draw(0, 0);
+
+	cvImageHalf.draw(256, 0);
+
 	ofDrawBitmapString("FPS "+ofToString(ps3eye.getRealFrameRate()), 20, 20);
-	gui.draw();
+	//gui.draw();
 }
 
 //--------------------------------------------------------------

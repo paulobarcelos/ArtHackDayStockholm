@@ -26,4 +26,8 @@ public:
 	ofxPanel gui;
 	ofxMacamPs3Eye ps3eye;
 	ofImage cvImage;
+	ofImage cvImageHalf;
+	ofVideoPlayer video;
+	vector<ofImage> gaussCopy;
+	vector<ofImage> videoData;
 };
