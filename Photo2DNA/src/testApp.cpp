@@ -264,6 +264,8 @@ void testApp::keyReleased(int key){
 	if (key == 'd') debug = !debug;
 	if (key == 'f') ofToggleFullscreen();
 	
+	if(key == 'p') printBitmap(75, 75, adalogo_data);
+	
 	if(key == ' '){
 		takePicture();
 	}
