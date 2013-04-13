@@ -178,19 +178,54 @@ void testApp::draw(){
 
 void testApp::takePicture(){
 	unsigned char * greyPixels =  bmp.getPixels();
+	
 	ofPixels pixels;
 	pixels.allocate(bmp.getWidth(), bmp.getHeight(), 3);
 	imageSmall.readToPixels(pixels);
 	ofPixels channel = pixels.getChannel(0);
 	
+
+	/*uint8_t * printData = new uint8_t [(int) imageSmall.getWidth()* (int)imageSmall.getHeight()/8];
+	uint8_t currByte;
 	for (int i = 0; i < channel.size(); i++) {
-		greyPixels[i] = channel[i];
-	}
+		greyPixels[i] = ((int)channel[i] > 100) ? 255 : 0;
+		
+		currByte <<= 1;
+		currByte |= ((int)channel[i] > 100) ? 0 : 1;
+		if(i%8 == 7){
+			printData[i] = currByte;
+			cout <<  ofToHex(currByte);
+		}
+		
+		if(i % (int)imageSmall.getWidth() == 0) cout << endl;
+	}*/
+	
 	bmp.update();
 	string timestamp = ofToString(ofGetUnixTime());
 	
+	
 	string filename = timestamp + ".bmp";
 	bmp.saveImage(filename);
+	
+	
+	
+	
+	/*ofPixels pixelsBig;
+	pixelsBig.allocate(image.getWidth(), image.getHeight(), 3);
+	image.readToPixels(pixelsBig);
+	ofPixels channelBig = pixelsBig.getChannel(0);
+	uint8_t * printData = new uint8_t [(int) image.getWidth()* (int)image.getHeight()];
+	uint8_t currByte;
+	for (int i = 0; i < channelBig.size(); i++) {
+		currByte <<= 1;
+		currByte |= ((int)channelBig[i] > 100) ? 0 : 1;
+		if(i%8 == 7){
+			printData[i] = currByte;
+		}
+	}*/
+	//printBitmap(image.getWidth(), image.getHeight(), printData);
+	
+	
 	
 	string script = ofFilePath::getEnclosingDirectory(ofFilePath::getCurrentExePath(), false) + "../Resources/Bits2DNA.pl";
 	string command = "perl " + script + " \"" + ofToDataPath(filename) + "\" \"" + ofToDataPath(filename)+".dna" + "\"";
@@ -219,14 +254,16 @@ void testApp::takePicture(){
 		}
 	}
 	ofFbo printImage;
-	printImage.allocate(384, 50 + 384 + (int) (data.size() / (384 / 4)) * 4);
+	//printImage.allocate(384, 50 + 384 + (int) (data.size() / (384 / 4)) * 4);
+	printImage.allocate(384, 255);
 	printImage.begin();
 	ofClear(255,255,255);
 	ofSetColor(0, 0, 0, 255);
 	ofDrawBitmapString("ART HACK DAY STOCKHOLM 2013", 0, 14);
 	ofDrawBitmapString(timestamp + ".BMP.DNA", 0, 30);
 	ofSetColor(255, 255, 255, 255);
-	image.draw(20, 60, 344,344);
+	//image.draw(20, 60, 344,344);
+	image.draw(0, 0, 344,344);
 	
 	int row = 0;
 	int col = 0;
@@ -256,10 +293,30 @@ void testApp::takePicture(){
 	printImage.readToPixels(printFBOpixels);
 	ofPixels printChannel = printFBOpixels.getChannel(0);
 	
+	
+	uint8_t * printData = new uint8_t [(int) printImage.getWidth()* (int)printImage.getHeight()/8];
+	uint8_t currByte;
+	
 	for (int i = 0; i < printChannel.size(); i++) {
-		printPixels[i] = printChannel[i];
+		printPixels[i] = ((int)printChannel[i] > 100) ? 255 : 0;
+		
+		currByte <<= 1;
+		currByte |= ((int)channel[i] > 100) ? 0 : 1;
+		if(i%8 == 7){
+			printData[i] = currByte;
+			cout <<  ofToHex(currByte);
+		}
+		
+		if(i % (int)printImage.getWidth() == 0) cout << endl;
 	}
+
+	
 	printBmp.update();
+	int width = printImage.getWidth();
+	int height = printImage.getHeight();
+	
+	printBitmap(width, height, printData);
+	delete printData;
 	
 	printBmp.saveImage(filename+".print.bmp");
 }
@@ -308,7 +365,7 @@ void testApp::printBitmap(int w, int h, const uint8_t *bitmap) {
 
 void testApp::setupArduino() {
 	arduino.listDevices();
-	arduinoReady = arduino.setup("/dev/tty.usbmodemfd121", 19200);
+	arduinoReady = arduino.setup("/dev/tty.usbmodemfd1241", 19200);
 	if(arduinoReady) {
         printf("arduino ready");
 		arduino.flush();
