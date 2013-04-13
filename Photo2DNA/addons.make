@@ -1,6 +1,6 @@
-ofxCv
-ofxFft
+ofxFX
 ofxGui
 ofxMacamPs3Eye
 ofxOpenCv
+ofxPatches
 ofxXmlSettings
