@@ -1,8 +1,10 @@
 #include "testApp.h"
-
+#include "adalogo.h"
 
 //--------------------------------------------------------------
 void testApp::setup(){
+    setupArduino();
+
 	ofSetVerticalSync(true);
 	ofSetWindowShape(900, 480);
 	
@@ -264,6 +266,48 @@ void testApp::keyReleased(int key){
 		takePicture();
 	}
 }
+
+// Adafruit
+void testApp::printBitmap(int w, int h, const uint8_t *bitmap) {
+    int dotPrintTime = 30000; // See comments near top of file for
+    int dotFeedTime  =  2100; // an explanation of these values.
+
+    int rowBytes, rowBytesClipped, rowStart, chunkHeight, x, y, i;
+
+    rowBytes        = (w + 7) / 8; // Round up to next byte boundary
+    rowBytesClipped = (rowBytes >= 48) ? 48 : rowBytes; // 384 pixels max width
+
+    for(i=rowStart=0; rowStart < h; rowStart += 255) {
+        // Issue up to 255 rows at a time:
+        chunkHeight = h - rowStart;
+        if(chunkHeight > 255) chunkHeight = 255;
+
+        arduino.writeByte(18);
+        arduino.writeByte(42);
+        arduino.writeByte(chunkHeight);
+        arduino.writeByte(rowBytesClipped);
+
+        usleep(2 * BYTE_TIME);
+
+        for(y=0; y < chunkHeight; y++) {
+            for(x=0; x < rowBytesClipped; x++, i++) {
+                arduino.writeByte(*(bitmap+i));
+            }
+            i += rowBytes - rowBytesClipped;
+        }
+        usleep(chunkHeight * dotPrintTime);
+    }
+}
+
+void testApp::setupArduino() {
+	arduino.listDevices();
+	arduinoReady = arduino.setup("/dev/tty.usbmodemfd121", 19200);
+	if(arduinoReady) {
+        printf("arduino ready");
+		arduino.flush();
+	}
+}
+
 //--------------------------------------------------------------
 void testApp::onAutoGainAndShutterChange(bool & value){
 	ps3eye.setAutoGainAndShutter(value);
