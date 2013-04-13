@@ -159,13 +159,15 @@ void testApp::draw(){
 			break;
 	}
 	
-	display.draw(position, ofGetHeight(), ofGetHeight());
+	ofPushMatrix();
+	ofTranslate(position + ofPoint(ofGetHeight(),0));
+	ofScale(-1, 1);
+	display.draw(0,0 , ofGetHeight(), ofGetHeight());
+	ofPopMatrix();
 	
 	if(debug){
 		gui.draw();
 	}
-	
-	
 	
 }
 
