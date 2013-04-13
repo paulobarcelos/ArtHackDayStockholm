@@ -202,6 +202,7 @@
 		50df87d612c5aae17aafa6c02c6bc570 /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxXmlSettings.cpp; path = ../../../addons/ofxXmlSettings/src/ofxXmlSettings.cpp; sourceTree = SOURCE_ROOT; };
 		516717f84c0146512c47a3ec3f268851 /* ofxCvHaarFinder.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxCvHaarFinder.h; path = ../../../addons/ofxOpenCv/src/ofxCvHaarFinder.h; sourceTree = SOURCE_ROOT; };
 		52afa1f08c420992caaae6484f64f920 /* ofxSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSlider.h; path = ../../../addons/ofxGui/src/ofxSlider.h; sourceTree = SOURCE_ROOT; };
+		55E13F6117197F750072658C /* adalogo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = adalogo.h; sourceTree = "<group>"; };
 		586a8ec141bdfa82b3b0518c5749a6b0 /* config.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = config.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/config.h; sourceTree = SOURCE_ROOT; };
 		58cd89cc43dc0c2d6ac1d31e11031e88 /* DifferenceAbsolute.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DifferenceAbsolute.h; path = ../../../addons/ofxPatches/libs/ofxPatches/include/ofxPatches/patches/DifferenceAbsolute.h; sourceTree = SOURCE_ROOT; };
 		59626d03c690200ad4e8b3a6968441b6 /* ml.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ml.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/ml/ml.hpp; sourceTree = SOURCE_ROOT; };
@@ -919,6 +920,7 @@
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				c355c68f135b5bbe223bf9edd7e1f9b7 /* Bits2DNA.pl */,
+				55E13F6117197F750072658C /* adalogo.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;

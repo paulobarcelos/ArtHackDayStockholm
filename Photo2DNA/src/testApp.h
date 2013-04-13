@@ -4,6 +4,7 @@
 #include "ofxGui.h"
 #include "ofxMacamPs3Eye.h"
 #include "ofxPatches.h"
+#include "ofSerial.h"
 
 class testApp : public ofBaseApp{
 	
@@ -26,7 +27,15 @@ public:
 	void onWhiteBalanceChange(int & value);
 	
 	void keyReleased(int key);
-	
+
+    // Arduino
+    void printBitmap(int w, int h, const uint8_t *bitmap);
+    void setupArduino();
+    void updateArduino();
+    ofSerial arduino;
+	bool arduinoReady;
+
+    // GUI
 	ofxPanel gui;
 	ofxMacamPs3Eye ps3eye;
 	ofFbo image;
