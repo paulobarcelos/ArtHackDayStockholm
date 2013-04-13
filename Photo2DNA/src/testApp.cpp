@@ -1,6 +1,9 @@
 #include "testApp.h"
 #include "adalogo.h"
 
+#define BAUDRATE  19200
+#define BYTE_TIME (11L * 1000000L / BAUDRATE)
+
 //--------------------------------------------------------------
 void testApp::setup(){
     setupArduino();
