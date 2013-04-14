@@ -50,4 +50,6 @@ public:
 	float playHead = 0;
 	
 	bool debug;
+	
+	ofFbo printImage;
 };

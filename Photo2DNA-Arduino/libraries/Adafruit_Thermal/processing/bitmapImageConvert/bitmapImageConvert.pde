@@ -8,7 +8,7 @@ void setup() {
   int         i, x, y, b, rowBytes, totalBytes, lastBit, sum, n;
 
   // Select and load image
-  filename   = selectInput("Select image file to convert:");
+  filename   = "image.bmp";
   println("Loading image...");
   img        = loadImage(filename);
 

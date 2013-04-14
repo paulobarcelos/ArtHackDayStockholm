@@ -112,6 +112,8 @@ void testApp::setup(){
 	 
 	 tweener_1.addTween(&x,				// @var: pointer to the variable we want to tween
 	 500);*/
+	
+	
 }
 
 //--------------------------------------------------------------
@@ -157,7 +159,7 @@ void testApp::draw(){
 	switch (stage) {
 		case 0:
 		case 1:
-			position = ofPoint(ofGetWidth()/2 - ofGetHeight()/2, 0);
+			position = ofPoint(0,0);
 			break;
 			
 		default:
@@ -174,6 +176,11 @@ void testApp::draw(){
 		gui.draw();
 	}
 	
+	if(printImage.isAllocated())printImage.draw(ofGetHeight(),- 1000, ofGetWidth()-ofGetHeight(), printImage.getHeight());
+	
+	ofDrawBitmapString("DNA ENCODED", 100, ofGetHeight()/2);
+	ofDrawBitmapString("LARGER THEN LIFE", ofGetWidth() /2 + ofGetHeight()/2 + 100, ofGetHeight()/2);
+	
 }
 
 void testApp::takePicture(){
@@ -184,21 +191,9 @@ void testApp::takePicture(){
 	imageSmall.readToPixels(pixels);
 	ofPixels channel = pixels.getChannel(0);
 	
-
-	/*uint8_t * printData = new uint8_t [(int) imageSmall.getWidth()* (int)imageSmall.getHeight()/8];
-	uint8_t currByte;
 	for (int i = 0; i < channel.size(); i++) {
-		greyPixels[i] = ((int)channel[i] > 100) ? 255 : 0;
-		
-		currByte <<= 1;
-		currByte |= ((int)channel[i] > 100) ? 0 : 1;
-		if(i%8 == 7){
-			printData[i] = currByte;
-			cout <<  ofToHex(currByte);
-		}
-		
-		if(i % (int)imageSmall.getWidth() == 0) cout << endl;
-	}*/
+		greyPixels[i] = channel[i];
+	}
 	
 	bmp.update();
 	string timestamp = ofToString(ofGetUnixTime());
@@ -253,17 +248,16 @@ void testApp::takePicture(){
 			}
 		}
 	}
-	ofFbo printImage;
-	//printImage.allocate(384, 50 + 384 + (int) (data.size() / (384 / 4)) * 4);
-	printImage.allocate(384, 255);
+	printImage.allocate(384, 50 + 384 + (int) (data.size() / (384 / 4)) * 4);
+	//printImage.allocate(100, 20 );
 	printImage.begin();
 	ofClear(255,255,255);
 	ofSetColor(0, 0, 0, 255);
 	ofDrawBitmapString("ART HACK DAY STOCKHOLM 2013", 0, 14);
 	ofDrawBitmapString(timestamp + ".BMP.DNA", 0, 30);
 	ofSetColor(255, 255, 255, 255);
-	//image.draw(20, 60, 344,344);
-	image.draw(0, 0, 344,344);
+	image.draw(20, 60, 344,344);
+	//image.draw(0, 0, 344,344);
 	
 	int row = 0;
 	int col = 0;
@@ -294,37 +288,37 @@ void testApp::takePicture(){
 	ofPixels printChannel = printFBOpixels.getChannel(0);
 	
 	
-	uint8_t * printData = new uint8_t [(int) printImage.getWidth()* (int)printImage.getHeight()/8];
-	uint8_t currByte;
+	//uint8_t * printData = new uint8_t [(int) printImage.getWidth()* (int)printImage.getHeight()/8];
+	//uint8_t currByte;
 	
 	for (int i = 0; i < printChannel.size(); i++) {
 		printPixels[i] = ((int)printChannel[i] > 100) ? 255 : 0;
 		
-		currByte <<= 1;
-		currByte |= ((int)channel[i] > 100) ? 0 : 1;
-		if(i%8 == 7){
-			printData[i] = currByte;
-			cout <<  ofToHex(currByte);
-		}
-		
-		if(i % (int)printImage.getWidth() == 0) cout << endl;
+		//currByte <<= 1;
+		//currByte |= ((int)channel[i] > 100) ? 0 : 1;
+		//if(i%8 == 7){
+			//printData[i] = currByte;
+		//}
 	}
 
 	
 	printBmp.update();
 	int width = printImage.getWidth();
 	int height = printImage.getHeight();
-	
-	printBitmap(width, height, printData);
-	delete printData;
+	//zzprintBitmap(width, height, printData);
+	//delete printData;
 	
 	printBmp.saveImage(filename+".print.bmp");
 }
 void testApp::keyReleased(int key){
 	if (key == 'd') debug = !debug;
 	if (key == 'f') ofToggleFullscreen();
-	
-	if(key == 'p') printBitmap(75, 75, adalogo_data);
+	if(key =='t'){
+		ofBuffer buffer;
+		buffer = ofBufferFromFile("image_bytes");
+		printBitmap(100, 100, (uint8_t *)buffer.getBinaryBuffer());
+	}
+	if(key == 'p') printBitmap(300, 20, adalogo_data);
 	
 	if(key == ' '){
 		takePicture();
